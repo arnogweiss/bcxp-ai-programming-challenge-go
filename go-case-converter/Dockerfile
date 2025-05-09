@@ -1,5 +1,5 @@
 # Use the official Go image as the base image
-FROM golang:1.18 as builder
+FROM golang:1.20 AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -15,7 +15,7 @@ COPY . .
 RUN go build -o go-case-converter main.go
 
 # Use a minimal base image for the final container
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 # Set the working directory inside the container
 WORKDIR /app
