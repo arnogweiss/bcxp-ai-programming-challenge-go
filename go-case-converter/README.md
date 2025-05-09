@@ -1,55 +1,91 @@
 # Go Case Converter
 
-This project provides a simple command-line interface to convert between camel case and snake case formats. It includes two main conversion functions:
+The `go-case-converter` project provides a REST API for converting strings between camel case and snake case formats. It includes two main endpoints:
 
-1. **ConvertCamelToSnake**: Converts a string from camel case to snake case.
-2. **ConvertSnakeToCamel**: Converts a string from snake case to camel case.
+1. **Convert Camel Case to Snake Case**: `/convert/camel-to-snake`
+2. **Convert Snake Case to Camel Case**: `/convert/snake-to-camel`
+
+## Features
+
+- Convert camel case strings (e.g., `camelCase`) to snake case (e.g., `camel_case`).
+- Convert snake case strings (e.g., `snake_case`) to camel case (e.g., `snakeCase`).
+- Input validation to ensure only valid single-word strings are processed.
 
 ## Installation
 
-To install the project, clone the repository and navigate to the project directory:
+### Prerequisites
 
-```bash
-git clone https://github.com/yourusername/go-case-converter.git
-cd go-case-converter
-```
+- Go 1.18 or later
+- Docker (optional, for containerized deployment)
+
+### Steps
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/go-case-converter.git
+   cd go-case-converter
+   ```
+
+2. Install dependencies:
+   ```bash
+   go mod tidy
+   ```
+
+3. Run the application:
+   ```bash
+   go run main.go
+   ```
+
+The server will start on `http://localhost:8080`.
 
 ## Usage
 
-### Convert Camel Case to Snake Case
+### Endpoints
 
-To convert a string from camel case to snake case, use the `ConvertCamelToSnake` function. 
+#### 1. Convert Camel Case to Snake Case
+- **URL**: `/convert/camel-to-snake`
+- **Method**: `POST`
+- **Request Body**:
+  ```json
+  {
+    "input": "camelCaseExample"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "result": "camel_case_example"
+  }
+  ```
 
-**Example:**
+#### 2. Convert Snake Case to Camel Case
+- **URL**: `/convert/snake-to-camel`
+- **Method**: `POST`
+- **Request Body**:
+  ```json
+  {
+    "input": "snake_case_example"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "result": "snakeCaseExample"
+  }
+  ```
 
-```go
-input := "camelCaseString"
-output := ConvertCamelToSnake(input)
-// output: "camel_case_string"
-```
+### Example Usage with `curl`
 
-### Convert Snake Case to Camel Case
-
-To convert a string from snake case to camel case, use the `ConvertSnakeToCamel` function.
-
-**Example:**
-
-```go
-input := "snake_case_string"
-output := ConvertSnakeToCamel(input)
-// output: "snakeCaseString"
-```
-
-## Running the Application
-
-To run the application, execute the following command in the project directory:
-
+#### Convert Camel Case to Snake Case
 ```bash
-go run main.go
+curl -X POST http://localhost:8080/convert/camel-to-snake \
+-H "Content-Type: application/json" \
+-d '{"input": "camelCaseExample"}'
 ```
 
-You can then follow the prompts to enter a string for conversion.
-
-## License
-
-This project is licensed under the MIT License.
+#### Convert Snake Case to Camel Case
+```bash
+curl -X POST http://localhost:8080/convert/snake-to-camel \
+-H "Content-Type: application/json" \
+-d '{"input": "snake_case_example"}'
+```
