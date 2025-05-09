@@ -5,12 +5,12 @@ import (
 	"regexp"
 )
 
-// ValidateSingleWord checks if the input is a single word without spaces or special characters.
+// ValidateSingleWord checks if the input is a single word in snake_case, kebab-case, or camelCase.
 func ValidateSingleWord(input string) error {
-	// Regular expression to match a single word (letters, numbers, underscores only)
-	validWordRegex := regexp.MustCompile(`^[a-zA-Z0-9_]+$`)
+	// Regular expression to match a single word in snake_case, kebab-case, or camelCase
+	validWordRegex := regexp.MustCompile(`^[a-zA-Z0-9_-]+$`)
 	if !validWordRegex.MatchString(input) {
-		return errors.New("input must be a single word containing only letters, numbers, or underscores")
+		return errors.New("input must be a single word containing only letters, numbers, underscores, or hyphens")
 	}
 	return nil
 }

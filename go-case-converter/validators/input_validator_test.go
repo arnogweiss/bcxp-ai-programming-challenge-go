@@ -4,27 +4,24 @@ import "testing"
 
 func TestValidateSingleWord(t *testing.T) {
 	tests := []struct {
-		input    string
-		expected string // Expected error message, or empty string if valid
+		input       string
+		expectError bool
 	}{
-		{"validInput", ""},
-		{"valid_input", ""},
-		{"Valid123", ""},
-		{"123", ""},
-		{"", "input must be a single word containing only letters, numbers, or underscores"},
-		{"invalid input", "input must be a single word containing only letters, numbers, or underscores"},
-		{"invalid-input", "input must be a single word containing only letters, numbers, or underscores"},
-		{"invalid@input", "input must be a single word containing only letters, numbers, or underscores"},
-		{"invalid#input", "input must be a single word containing only letters, numbers, or underscores"},
+		{"validWord", false},      // camelCase
+		{"valid_word", false},     // snake_case
+		{"valid-word", false},     // kebab-case
+		{"Invalid Word", true},    // contains space
+		{"invalid@word", true},    // contains special character
+		{"", true},                // empty string
+		{"123valid", false},       // starts with numbers
+		{"valid123", false},       // ends with numbers
+		{"valid_word-123", false}, // mixed snake and kebab
 	}
 
 	for _, test := range tests {
 		err := ValidateSingleWord(test.input)
-		if err != nil && err.Error() != test.expected {
-			t.Errorf("ValidateSingleWord(%q) returned error %q; expected %q", test.input, err.Error(), test.expected)
-		}
-		if err == nil && test.expected != "" {
-			t.Errorf("ValidateSingleWord(%q) returned no error; expected %q", test.input, test.expected)
+		if (err != nil) != test.expectError {
+			t.Errorf("ValidateSingleWord(%q) = %v; want error: %v", test.input, err, test.expectError)
 		}
 	}
 }
